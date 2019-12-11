@@ -145,6 +145,61 @@ Names get reindexed if an item is added or deleted.
 </script>
 ```
 
+## Nested Property Example
+```html
+<!-- outer repeater -->
+<form class="repeater">
+    <div data-repeater-list="Publication.Authors">
+      <div data-repeater-item>
+          <input type="text" name="Id" class="form-control" />
+          <input type="text" name="AuthorId" class="form-control" />
+          <label class="control-label">排序</label>
+          <input type="text" name="Priority" class="form-control" />
+          <input type="text" name="Author.ImgUrl" class="form-control" />
+          <input type="text" name="Author.Id" class="form-control" />
+          <input data-repeater-delete  type="button" value="Delete"/> 
+ 
+        <!-- innner repeater -->
+        <div class="inner-repeater">     
+          <div data-repeater-list="Author.Name">  
+            <div data-repeater-item> 
+              <input type="text" name="Id" />  
+              <input type="text" name="LangId" /> 
+              <input type="text"  name="Title"  />
+              <input data-repeater-delete type="button" value="Delete"/> 
+
+            </div>   
+          </div>     
+          <input data-repeater-create type="button" value="Add"/>
+        </div>
+
+      </div>
+    </div>
+    <input data-repeater-create type="button" value="Add"/>
+</form>
+<script src="path/to/jquery.js"></script>
+<script src="path/to/jquery.repeater/jquery.repeater.js"></script>
+<script>
+     $(document).ready(function () {
+      var $repeater =   $('.repeater').repeater({
+            // (Required if there is a nested repeater)
+            // Specify the configuration of the nested repeaters.
+            // Nested configuration follows the same format as the base configuration,
+            // supporting options "defaultValues", "show", "hide", etc.
+            // Nested repeaters additionally require a "selector" field.
+            repeaters: [{
+                // (Required)
+                // Specify the jQuery selector for this nested repeater
+                selector: '.inner-repeater',
+             
+            }
+                      ]
+        });
+    
+		$repeater.setList(  [{"Id":10847,"AuthorId":108,"Priority":99,"Author":{"Name":[{"Language":0,"Title":"Beauty","Id":211,"LangId":11239},{"Language":1,"Title":"Beast","Id":212,"LangId":11240}],"ImgUrl":"/foobar.jpg","Id":108}}]);
+    });
+</script>
+```
 
 ## repeaterVal
 
